@@ -14,18 +14,20 @@ class StudentCrudApplicationTests {
 
     @Test
     void createUpdateStudent() {
-        studentRepository.save(new Student("STUDENT"));
+        var saved = studentRepository.save(new Student("STUDENT"));
+        System.out.println("Student saved to DB: \n" + saved);
 
         var student = studentRepository.findById(1L)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
-        System.out.println(student);
+        System.out.println("Student fetched from DB:\n" + student);
 
         student.setName("STUDENT UPDATED");
-        studentRepository.save(student);
+        var updated = studentRepository.save(student);
+        System.out.println("Updated Student saved to DB:\n" + updated);
 
         var updatedStudent = studentRepository.findById(1L)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
-        System.out.println(updatedStudent);
+        System.out.println("Updated Student fetched from DB:\n" + updatedStudent);
 
         assertThat(updatedStudent).isEqualTo(student);
         assertThat(updatedStudent.getCreatedAt()).isEqualTo(student.getCreatedAt());
