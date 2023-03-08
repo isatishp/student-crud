@@ -1,8 +1,6 @@
-package com.example.demo.entities;
+package com.example.demo;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -16,9 +14,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Getter
-@Setter
 public class Student {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -34,6 +31,61 @@ public class Student {
     @Version
     private Long version;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    public Instant getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(Instant modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     @Override
     public boolean equals(Object o) {
