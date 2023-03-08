@@ -23,11 +23,20 @@ public class Student {
     @CreatedBy
     private String createdBy;
     @CreatedDate
+    @Column(columnDefinition = "timestamp")
     private Instant createdAt;
     @LastModifiedBy
     private String modifiedBy;
     @LastModifiedDate
+    @Column(columnDefinition = "timestamp")
     private Instant modifiedAt;
+
+    public Student(){}
+
+    public Student(String name) {
+        this.name = name;
+    }
+
     @Version
     private Long version;
 
@@ -102,4 +111,16 @@ public class Student {
         return getClass().hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", modifiedBy='" + modifiedBy + '\'' +
+                ", modifiedAt=" + modifiedAt +
+                ", version=" + version +
+                '}';
+    }
 }
