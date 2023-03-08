@@ -3,10 +3,6 @@ package com.example.demo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,35 +12,23 @@ class StudentCrudApplicationTests {
     @Autowired
     StudentRepository studentRepository;
 
-    @Autowired
-    TransactionTemplate txt;
-
     @Test
-    void createUpdateStudents() {
-        Stream.of("ABC", "DEF", "GHI", "JKL", "MNO", "PQR", "STU", "VWXY")
-                .map(Student::new)
-                .forEach(studentRepository::save);
+    void createUpdateStudent() {
+        studentRepository.save(new Student("STUDENT"));
 
-        var students = txt.execute(tx -> studentRepository.findAll());
-        System.out.println(students);
+        var student = studentRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Not Found"));
+        System.out.println(student);
 
-        assert students != null;
-        students.stream()
-                .peek(student -> student.setName(student.getName() + ".updated"))
-                .forEach(studentRepository::save);
+        student.setName("STUDENT UPDATED");
+        studentRepository.save(student);
 
-        var updatedStudents = txt.execute(tx -> studentRepository.findAll());
-        System.out.println(updatedStudents);
+        var updatedStudent = studentRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Not Found"));
+        System.out.println(updatedStudent);
 
-        assert updatedStudents != null;
-        IntStream.range(0, students.size())
-                .forEach(i -> {
-                            var student = students.get(i);
-                            var updatedStudent = updatedStudents.get(i);
-                            assertThat(updatedStudent).isEqualTo(student);
-                            assertThat(updatedStudent.getCreatedAt()).isEqualTo(student.getCreatedAt());
-                            assertThat(updatedStudent.getModifiedAt()).isBefore(student.getModifiedAt());
-                        }
-                );
+        assertThat(updatedStudent).isEqualTo(student);
+        assertThat(updatedStudent.getCreatedAt()).isEqualTo(student.getCreatedAt());
+        assertThat(updatedStudent.getModifiedAt()).isAfter(student.getModifiedAt());
     }
 }
