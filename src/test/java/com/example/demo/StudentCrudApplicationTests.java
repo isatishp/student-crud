@@ -14,7 +14,8 @@ class StudentCrudApplicationTests {
 
     @Test
     void createUpdateStudent() {
-        var saved = studentRepository.save(new Student("STUDENT"));
+        var s = new Student("STUDENT");
+        var saved = studentRepository.save(s);
         System.out.println("Student saved to DB: \n" + saved);
 
         var student = studentRepository.findById(1L)
@@ -28,6 +29,10 @@ class StudentCrudApplicationTests {
         var updatedStudent = studentRepository.findById(1L)
                 .orElseThrow(() -> new RuntimeException("Not Found"));
         System.out.println("Updated Student fetched from DB:\n" + updatedStudent);
+
+        updatedStudent.setName("STUDENT UPDATED AGAIN");
+        var updatedAgain = studentRepository.save(updatedStudent);
+        System.out.println("Updated Again Student saved to DB :\n" + updatedAgain);
 
         assertThat(updatedStudent).isEqualTo(student);
         assertThat(updatedStudent.getCreatedAt()).isEqualTo(student.getCreatedAt());
